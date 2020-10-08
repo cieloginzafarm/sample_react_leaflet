@@ -1,39 +1,44 @@
 import React from 'react';
 import { Map, Marker, Popup, TileLayer } from "react-leaflet";
-// import { Icon } from "leaflet";
-import * as hotelData from "./data/dubai-hotels.json";
+import { Icon } from "leaflet";
+import * as ginzafarmData from "./data/ginzafarm.json";
 import './App.css';
 
 function App() {
-  const [ activeHotel, setActiveHotel ] = React.useState(null);
+  const [activeGinzafarm, setActiveGinzafarm] = React.useState(null);
+  const marker = new Icon({
+    iconUrl: "/ginzafarm.png",
+    iconSize: [35, 35],
+  });
 
   return (
-    <Map center={[25, 55]} zoom={12}>
+    <Map center={[35.75, 139.7]} zoom={12}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      {hotelData.markers.map((hotel) => (
+      {ginzafarmData.markers.map((ginzafarm) => (
         <Marker
-          key={hotel.name}
-          position={[hotel.position[0], hotel.position[1]]}
+          key={ginzafarm.name}
+          position={[ginzafarm.coordinates[0], ginzafarm.coordinates[1]]}
           onClick={() => {
-            setActiveHotel(hotel);
+            setActiveGinzafarm(ginzafarm);
           }}
+          icon={marker}
         />
       ))}
-      {activeHotel && (
+      {activeGinzafarm && (
         <Popup
           position={[
-            activeHotel.position[0],
-            activeHotel.position[1],
+            activeGinzafarm.coordinates[0],
+            activeGinzafarm.coordinates[1],
           ]}
           onClose={() => {
-            setActiveHotel(null);
+            setActiveGinzafarm(null);
           }}
         >
           <div>
-            <h2>{activeHotel.name}</h2>
+            <h2>{activeGinzafarm.name}</h2>
           </div>
         </Popup>
       )}
